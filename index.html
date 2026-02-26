@@ -21,13 +21,12 @@
     .card{background:white;padding:25px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,0.08);transition:.25s}
     .card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(0,0,0,0.12)}
     button{margin-top:12px;background:linear-gradient(120deg,#2563eb,#4f46e5);color:white;border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer}
-    button:hover{opacity:.9}
     footer{margin-top:60px;text-align:center;padding:30px;background:#0f172a;color:#94a3b8}
     .modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;overflow:auto;padding:20px}
-    .modal-box{background:white;padding:30px;border-radius:14px;width:360px;text-align:center}
+    .modal-box{background:white;padding:30px;border-radius:14px;width:380px;text-align:center}
     .modal-box input{width:100%;padding:10px;margin:8px 0;border:1px solid #cbd5e1;border-radius:8px}
     .modal-box label{font-size:13px;font-weight:600;color:#475569;display:block;margin-top:10px;text-align:left}
-    .profile-btn{background:#0f172a}
+    .profile-preview{width:90px;height:90px;border-radius:50%;object-fit:cover;margin:10px auto;display:none;border:3px solid #e2e8f0}
   </style>
 </head>
 <body>
@@ -66,7 +65,7 @@
   <p>© 2026 Student Job Portal • Frontend Project</p>
 </footer>
 
-<!-- LOGIN MODAL -->
+<!-- LOGIN -->
 <div class="modal" id="loginModal">
   <div class="modal-box">
     <h3>Sign in to apply</h3>
@@ -76,25 +75,43 @@
   </div>
 </div>
 
-<!-- PROFILE MODAL -->
+<!-- PROFILE -->
 <div class="modal" id="profileModal">
   <div class="modal-box">
     <h3>Your Profile</h3>
+
+    <img id="preview" class="profile-preview">
+    <label>Profile Photo</label>
+    <input id="photo" type="file" accept="image/*" onchange="previewPhoto()">
+
     <label>Full Name</label>
     <input id="name">
+
+    <label>Phone Number</label>
+    <input id="phone">
+
+    <label>Address</label>
+    <input id="address">
+
     <label>Age</label>
     <input id="age" type="number">
+
     <label>Date of Birth</label>
     <input id="dob" type="date">
+
     <label>Qualification</label>
     <input id="qualification">
+
     <label>College</label>
     <input id="college">
+
     <label>Skills</label>
     <input id="skills">
+
     <label>Upload Resume (PDF)</label>
     <input id="resume" type="file" accept=".pdf">
-    <button class="profile-btn" onclick="saveProfile()">Save Profile</button>
+
+    <button onclick="saveProfile()">Save Profile</button>
   </div>
 </div>
 
@@ -116,71 +133,50 @@ let loggedIn=localStorage.getItem('loggedIn')==='true';
 let profileComplete=localStorage.getItem('profileComplete')==='true';
 
 function apply(){
-  if(!loggedIn){
-    openLogin();
-    return;
-  }
-  if(!profileComplete){
-    openProfile();
-    alert('Please complete your profile before applying');
-    return;
-  }
-  alert('Application submitted successfully ✔');
+  if(!loggedIn){openLogin();return}
+  if(!profileComplete){openProfile();alert('Complete profile first');return}
+  alert('Application submitted ✔')
 }
 
-function openLogin(){
-  document.getElementById('loginModal').style.display='flex';
-}
+function openLogin(){document.getElementById('loginModal').style.display='flex'}
+function openProfile(){if(!loggedIn){openLogin();return}document.getElementById('profileModal').style.display='flex'}
 
-function openProfile(){
-  if(!loggedIn){
-    openLogin();
-    return;
+function login(){loggedIn=true;localStorage.setItem('loggedIn','true');document.getElementById('loginModal').style.display='none';alert('Login success — complete profile now')}
+
+function previewPhoto(){
+  const file=document.getElementById('photo').files[0];
+  if(file){
+    const url=URL.createObjectURL(file);
+    const img=document.getElementById('preview');
+    img.src=url;
+    img.style.display='block';
   }
-  document.getElementById('profileModal').style.display='flex';
-}
-
-function login(){
-  loggedIn=true;
-  localStorage.setItem('loggedIn','true');
-  document.getElementById('loginModal').style.display='none';
-  alert('Login successful! Now complete your profile.');
 }
 
 function saveProfile(){
   const name=document.getElementById('name').value;
-  const age=document.getElementById('age').value;
+  const phone=document.getElementById('phone').value;
+  const address=document.getElementById('address').value;
   const resume=document.getElementById('resume').files.length;
-
-  if(!name||!age||!resume){
-    alert('Please fill all required fields and upload resume');
+  if(!name||!phone||!address||!resume){
+    alert('Fill all required fields including resume');
     return;
   }
-
   profileComplete=true;
   localStorage.setItem('profileComplete','true');
   document.getElementById('profileModal').style.display='none';
-  alert('Profile saved successfully ✔');
+  alert('Profile saved ✔');
 }
 
 function filterJobs(){
   const value=document.getElementById('searchBox').value.toLowerCase();
-  const jobs=document.querySelectorAll('#jobList .card');
-  jobs.forEach(job=>{
-    const text=job.getAttribute('data-title');
-    job.style.display=text.includes(value)?'block':'none';
-  });
+  document.querySelectorAll('#jobList .card').forEach(job=>{
+    job.style.display=job.getAttribute('data-title').includes(value)?'block':'none'
+  })
 }
 
-function scrollToSection(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
-}
-
-window.onclick=function(e){
-  if(e.target.classList.contains('modal')){
-    e.target.style.display='none';
-  }
-}
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+window.onclick=e=>{if(e.target.classList.contains('modal'))e.target.style.display='none'}
 
 </script>
 
