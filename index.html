@@ -8,31 +8,26 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#eef2ff,#f8fafc);color:#1e293b}
-
     header{background:white;padding:18px 40px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,0.06);position:sticky;top:0;z-index:10}
     header h2{color:#2563eb}
     nav a{margin:0 15px;text-decoration:none;font-weight:600;color:#334155;cursor:pointer}
     nav a:hover{color:#2563eb}
-
     .hero{padding:80px 20px;text-align:center;background:linear-gradient(120deg,#2563eb,#4f46e5);color:white}
     .hero h1{font-size:40px;margin-bottom:10px}
-    .hero p{opacity:.9}
     .search{margin-top:25px;padding:14px;width:320px;border-radius:10px;border:none}
-
     .container{padding:50px 10%}
     h2{margin-bottom:20px}
-
     .jobs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px}
     .card{background:white;padding:25px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,0.08);transition:.25s}
     .card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(0,0,0,0.12)}
-
     button{margin-top:12px;background:linear-gradient(120deg,#2563eb,#4f46e5);color:white;border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer}
     button:hover{opacity:.9}
-
-    input,textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #cbd5e1}
-
     footer{margin-top:60px;text-align:center;padding:30px;background:#0f172a;color:#94a3b8}
-    .hidden{display:none}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;overflow:auto;padding:20px}
+    .modal-box{background:white;padding:30px;border-radius:14px;width:360px;text-align:center}
+    .modal-box input{width:100%;padding:10px;margin:8px 0;border:1px solid #cbd5e1;border-radius:8px}
+    .modal-box label{font-size:13px;font-weight:600;color:#475569;display:block;margin-top:10px;text-align:left}
+    .profile-btn{background:#0f172a}
   </style>
 </head>
 <body>
@@ -40,76 +35,153 @@
 <header>
   <h2>JobPortal</h2>
   <nav>
-    <a onclick="show('home')">Home</a>
-    <a onclick="show('jobs')">Jobs</a>
-    <a onclick="show('login')">Login</a>
-    <a onclick="show('register')">Register</a>
+    <a onclick="scrollToSection('home')">Home</a>
+    <a onclick="scrollToSection('jobs')">Jobs</a>
+    <a onclick="openProfile()">Profile</a>
+    <a onclick="openLogin()">Login</a>
   </nav>
 </header>
 
 <section id="home" class="hero">
   <h1>Launch Your Career Today</h1>
   <p>Search thousands of jobs and apply instantly</p>
-  <input id="searchBox" class="search" placeholder="Search job titles, skills..." oninput="filterJobs()">
+  <input id="searchBox" class="search" placeholder="Search job titles..." oninput="filterJobs()">
 </section>
 
-<section id="jobs" class="container">
-  <h2>Latest Jobs</h2>
-  <div class="jobs" id="jobList">
-    <div class="card" data-title="frontend developer techsoft">
-      <h3>Frontend Developer</h3>
-      <p>TechSoft Pvt Ltd</p>
-      <button onclick="apply()">Apply Now</button>
-    </div>
-    <div class="card" data-title="ui ux designer creative">
-      <h3>UI/UX Designer</h3>
-      <p>Creative Studio</p>
-      <button onclick="apply()">Apply Now</button>
-    </div>
-    <div class="card" data-title="data analyst insight">
-      <h3>Data Analyst</h3>
-      <p>Insight Corp</p>
-      <button onclick="apply()">Apply Now</button>
-    </div>
+<section class="container">
+  <h2>🔥 Latest Jobs</h2>
+  <div class="jobs">
+    <div class="card"><h3>Frontend Developer</h3><p>TechSoft Pvt Ltd</p><button onclick="apply()">Apply</button></div>
+    <div class="card"><h3>UI Designer</h3><p>Creative Studio</p><button onclick="apply()">Apply</button></div>
+    <div class="card"><h3>Data Analyst</h3><p>Insight Corp</p><button onclick="apply()">Apply</button></div>
   </div>
 </section>
 
-<section id="login" class="container hidden">
-  <h2>Login</h2>
-  <input placeholder="Email">
-  <input type="password" placeholder="Password">
-  <button>Login</button>
-</section>
-
-<section id="register" class="container hidden">
-  <h2>Create Account</h2>
-  <input placeholder="Full Name">
-  <input placeholder="Email">
-  <input type="password" placeholder="Password">
-  <button>Register</button>
+<section id="jobs" class="container">
+  <h2>💼 All Available Jobs</h2>
+  <div class="jobs" id="jobList"></div>
 </section>
 
 <footer>
   <p>© 2026 Student Job Portal • Frontend Project</p>
 </footer>
 
+<!-- LOGIN MODAL -->
+<div class="modal" id="loginModal">
+  <div class="modal-box">
+    <h3>Sign in to apply</h3>
+    <input id="email" placeholder="Email">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal" id="profileModal">
+  <div class="modal-box">
+    <h3>Your Profile</h3>
+    <label>Full Name</label>
+    <input id="name">
+    <label>Age</label>
+    <input id="age" type="number">
+    <label>Date of Birth</label>
+    <input id="dob" type="date">
+    <label>Qualification</label>
+    <input id="qualification">
+    <label>College</label>
+    <input id="college">
+    <label>Skills</label>
+    <input id="skills">
+    <label>Upload Resume (PDF)</label>
+    <input id="resume" type="file" accept=".pdf">
+    <button class="profile-btn" onclick="saveProfile()">Save Profile</button>
+  </div>
+</div>
+
 <script>
-function show(id){
-  document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
+
+const titles=[
+"Frontend Developer","Backend Developer","Full Stack Developer","UI Designer","UX Researcher","Graphic Designer",
+"Data Analyst","Data Scientist","Machine Learning Engineer","Software Tester","DevOps Engineer","Cloud Engineer",
+"Mobile App Developer","Android Developer","iOS Developer","Cyber Security Analyst","Network Engineer","System Admin",
+"Database Administrator","Product Manager","Project Manager","Business Analyst","Digital Marketer","SEO Specialist",
+"Content Writer","HR Executive","Technical Support","QA Engineer","Game Developer","AI Engineer"
+];
+const companies=["TechSoft","Infosys","TCS","Wipro","Google","Microsoft","Amazon","Zoho","Freshworks","IBM"];
+
+const jobList=document.getElementById('jobList');
+jobList.innerHTML=titles.map(t=>`<div class='card' data-title='${t.toLowerCase()}'><h3>${t}</h3><p>${companies[Math.floor(Math.random()*companies.length)]}</p><button onclick='apply()'>Apply</button></div>`).join("");
+
+let loggedIn=localStorage.getItem('loggedIn')==='true';
+let profileComplete=localStorage.getItem('profileComplete')==='true';
+
+function apply(){
+  if(!loggedIn){
+    openLogin();
+    return;
+  }
+  if(!profileComplete){
+    openProfile();
+    alert('Please complete your profile before applying');
+    return;
+  }
+  alert('Application submitted successfully ✔');
 }
 
-function apply(){alert('Application submitted (demo)')}
+function openLogin(){
+  document.getElementById('loginModal').style.display='flex';
+}
+
+function openProfile(){
+  if(!loggedIn){
+    openLogin();
+    return;
+  }
+  document.getElementById('profileModal').style.display='flex';
+}
+
+function login(){
+  loggedIn=true;
+  localStorage.setItem('loggedIn','true');
+  document.getElementById('loginModal').style.display='none';
+  alert('Login successful! Now complete your profile.');
+}
+
+function saveProfile(){
+  const name=document.getElementById('name').value;
+  const age=document.getElementById('age').value;
+  const resume=document.getElementById('resume').files.length;
+
+  if(!name||!age||!resume){
+    alert('Please fill all required fields and upload resume');
+    return;
+  }
+
+  profileComplete=true;
+  localStorage.setItem('profileComplete','true');
+  document.getElementById('profileModal').style.display='none';
+  alert('Profile saved successfully ✔');
+}
 
 function filterJobs(){
   const value=document.getElementById('searchBox').value.toLowerCase();
   const jobs=document.querySelectorAll('#jobList .card');
-
   jobs.forEach(job=>{
     const text=job.getAttribute('data-title');
     job.style.display=text.includes(value)?'block':'none';
   });
 }
+
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+window.onclick=function(e){
+  if(e.target.classList.contains('modal')){
+    e.target.style.display='none';
+  }
+}
+
 </script>
 
 </body>
