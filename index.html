@@ -4,67 +4,135 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Job Portal</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#eef2ff,#f8fafc);color:#1e293b}
+
+    header{
+      background:white;
+      padding:18px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow:0 4px 12px rgba(0,0,0,0.06);
+      position:sticky;top:0;z-index:10
+    }
+    header h2{color:#2563eb}
+    nav a{margin:0 15px;text-decoration:none;font-weight:600;color:#334155;cursor:pointer}
+    nav a:hover{color:#2563eb}
+
+    .hero{
+      padding:80px 20px;
+      text-align:center;
+      background:linear-gradient(120deg,#2563eb,#4f46e5);
+      color:white
+    }
+    .hero h1{font-size:40px;margin-bottom:10px}
+    .hero p{opacity:.9}
+    .search{margin-top:25px;padding:14px;width:320px;border-radius:10px;border:none}
+
+    .container{padding:50px 10%}
+    h2{margin-bottom:20px}
+
+    .jobs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px}
+    .card{
+      background:white;
+      padding:25px;
+      border-radius:16px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.08);
+      transition:.25s
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(0,0,0,0.12)}
+
+    button{
+      margin-top:12px;
+      background:linear-gradient(120deg,#2563eb,#4f46e5);
+      color:white;border:none;padding:10px 18px;
+      border-radius:8px;font-weight:600;cursor:pointer
+    }
+    button:hover{opacity:.9}
+
+    input,textarea{
+      width:100%;padding:12px;margin:8px 0;
+      border-radius:8px;border:1px solid #cbd5e1
+    }
+
+    footer{
+      margin-top:60px;
+      text-align:center;
+      padding:30px;
+      background:#0f172a;
+      color:#94a3b8
+    }
+    .hidden{display:none}
+  </style>
 </head>
 <body>
 
 <header>
-  <h2>Student Job Portal</h2>
+  <h2>JobPortal</h2>
   <nav>
-    <a onclick="showPage('home')">Home</a>
-    <a onclick="showPage('jobs')">Jobs</a>
-    <a onclick="showPage('profile')">Profile</a>
-    <a onclick="showPage('post')">Post Job</a>
-    <a onclick="showPage('login')">Login</a>
+    <a onclick="show('home')">Home</a>
+    <a onclick="show('jobs')">Jobs</a>
+    <a onclick="show('login')">Login</a>
+    <a onclick="show('register')">Register</a>
   </nav>
 </header>
 
-<section id="home" class="page">
-  <h1>Find Your Dream Job</h1>
-  <input type="text" placeholder="Search jobs..." class="search">
+<section id="home" class="hero">
+  <h1>Launch Your Career Today</h1>
+  <p>Search thousands of jobs and apply instantly</p>
+  <input class="search" placeholder="Search job titles, skills...">
 </section>
 
-<section id="jobs" class="page hidden">
-  <h2>Available Jobs</h2>
-  <div class="card">
-    <h3>Frontend Developer</h3>
-    <p>Company: TechSoft</p>
-    <button onclick="apply()">Apply</button>
+<section id="jobs" class="container hidden">
+  <h2>Latest Jobs</h2>
+  <div class="jobs">
+    <div class="card">
+      <h3>Frontend Developer</h3>
+      <p>TechSoft Pvt Ltd</p>
+      <button onclick="apply()">Apply Now</button>
+    </div>
+    <div class="card">
+      <h3>UI/UX Designer</h3>
+      <p>Creative Studio</p>
+      <button onclick="apply()">Apply Now</button>
+    </div>
+    <div class="card">
+      <h3>Data Analyst</h3>
+      <p>Insight Corp</p>
+      <button onclick="apply()">Apply Now</button>
+    </div>
   </div>
-  <div class="card">
-    <h3>UI Designer</h3>
-    <p>Company: Creative Studio</p>
-    <button onclick="apply()">Apply</button>
-  </div>
 </section>
 
-<section id="profile" class="page hidden">
-  <h2>My Profile</h2>
-  <input type="text" placeholder="Your Name">
-  <input type="email" placeholder="Email">
-  <input type="file">
-  <button>Save Profile</button>
-</section>
-
-<section id="post" class="page hidden">
-  <h2>Post a Job</h2>
-  <input type="text" placeholder="Job Title">
-  <input type="text" placeholder="Company Name">
-  <textarea placeholder="Job Description"></textarea>
-  <button>Post Job</button>
-</section>
-
-<section id="login" class="page hidden">
+<section id="login" class="container hidden">
   <h2>Login</h2>
-  <input type="email" placeholder="Email">
+  <input placeholder="Email">
   <input type="password" placeholder="Password">
   <button>Login</button>
 </section>
 
+<section id="register" class="container hidden">
+  <h2>Create Account</h2>
+  <input placeholder="Full Name">
+  <input placeholder="Email">
+  <input type="password" placeholder="Password">
+  <button>Register</button>
+</section>
+
 <footer>
-  <p>College Project – Job Portal UI</p>
+  <p>© 2026 Student Job Portal • Frontend Project</p>
 </footer>
 
-<script src="script.js"></script>
+<script>
+function show(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+function apply(){alert('Application submitted (demo)')}
+</script>
+
 </body>
 </html>
