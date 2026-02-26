@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h2>Student Job Portal</h2>
+  <nav>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('jobs')">Jobs</a>
+    <a onclick="showPage('profile')">Profile</a>
+    <a onclick="showPage('post')">Post Job</a>
+    <a onclick="showPage('login')">Login</a>
+  </nav>
+</header>
+
+<section id="home" class="page">
+  <h1>Find Your Dream Job</h1>
+  <input type="text" placeholder="Search jobs..." class="search">
+</section>
+
+<section id="jobs" class="page hidden">
+  <h2>Available Jobs</h2>
+  <div class="card">
+    <h3>Frontend Developer</h3>
+    <p>Company: TechSoft</p>
+    <button onclick="apply()">Apply</button>
+  </div>
+  <div class="card">
+    <h3>UI Designer</h3>
+    <p>Company: Creative Studio</p>
+    <button onclick="apply()">Apply</button>
+  </div>
+</section>
+
+<section id="profile" class="page hidden">
+  <h2>My Profile</h2>
+  <input type="text" placeholder="Your Name">
+  <input type="email" placeholder="Email">
+  <input type="file">
+  <button>Save Profile</button>
+</section>
+
+<section id="post" class="page hidden">
+  <h2>Post a Job</h2>
+  <input type="text" placeholder="Job Title">
+  <input type="text" placeholder="Company Name">
+  <textarea placeholder="Job Description"></textarea>
+  <button>Post Job</button>
+</section>
+
+<section id="login" class="page hidden">
+  <h2>Login</h2>
+  <input type="email" placeholder="Email">
+  <input type="password" placeholder="Password">
+  <button>Login</button>
+</section>
+
+<footer>
+  <p>College Project – Job Portal UI</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
